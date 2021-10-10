@@ -5,6 +5,7 @@ Created by sheepy0125
 """
 
 from OpenGL.GL import *
+from shapes.colors import colors
 
 
 class Cube:
@@ -12,7 +13,7 @@ class Cube:
     POS_HALF_SIZE: int = SIZE / 2
     NEG_HALF_SIZE: int = POS_HALF_SIZE / -1
 
-    cube_verticies: tuple = (
+    verticies: tuple = (
         (NEG_HALF_SIZE, POS_HALF_SIZE, NEG_HALF_SIZE),  # Front top left       0
         (POS_HALF_SIZE, POS_HALF_SIZE, NEG_HALF_SIZE),  # Front top right      1
         (NEG_HALF_SIZE, NEG_HALF_SIZE, NEG_HALF_SIZE),  # Front bottom left    2
@@ -41,13 +42,41 @@ class Cube:
         (3, 7),
     )
 
+    surfaces: tuple = (
+        # Front
+        (1, 0, 2, 3),
+        # Back
+        (5, 4, 6, 7),
+        # Left
+        (2, 0, 4, 6),
+        # Right
+        (3, 1, 5, 7),
+        # Top
+        (1, 0, 4, 5),
+        # Bottom
+        (3, 2, 6, 7),
+    )
+
     @staticmethod
-    def render_cube():
+    def render():
+        # Surfaces
+        glBegin(GL_QUADS)
+        for surface in Cube.surfaces:
+            color_idx: int = 0
+            for vertex_idx in surface:
+                vertex: tuple = Cube.verticies[vertex_idx]
+
+                # Change color
+                color_idx += 1
+                glColor3fv(colors[color_idx])
+
+                glVertex3fv(vertex)
+        glEnd()
+
+        # Outlines
         glBegin(GL_LINES)
         for edge in Cube.cube_edges:
             for vertex_idx in edge:
-                vertex: tuple = Cube.cube_verticies[vertex_idx]
+                vertex: tuple = Cube.verticies[vertex_idx]
                 glVertex3fv(vertex)
-                # print(f"{edge=} {vertex=}")
-
         glEnd()

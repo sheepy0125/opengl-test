@@ -52,7 +52,7 @@ def main() -> None:
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)  # like window.fill()
         glRotatef(ROTATE_BY_ANGLE, *ROTATE_BY_COORDS)
-        Cube.render_cube()
+        Cube.render()
         pygame.display.flip()
         clock.tick(FPS)
 
